@@ -42,28 +42,30 @@ class html2ntz {
         // if we have no special handler we just parse the text
         return this.childerenHandler(element);
     }
-  };
+  }
 
   // each node needs to be handled by it's type
   // https://developer.mozilla.org/en/docs/Web/API/Node/nodeType
   nodeHandler(node) {
-    var astArray = [];
+    var astObj = {};
 
     switch (node.nodeType) {
       case 1: // ELEMENT_NODE -- An Element node such as <p> or <div>.
-        astArray.push(this.elementHandler($(node)));
+        astObj = this.elementHandler($(node));
         break;
       case 3: // 	TEXT_NODE -- The actual Text of Element or Attr.
-        astArray.push({
+        astObj = {
           type: "text",
           value: node.nodeValue
-        });
+        };
+        break;
+      case 8: // 	COMMENT_NODE -- no handling for comments
         break;
       default:
         console.log("error: not supported node-style:", node.nodeType);
     }
-    return astArray;
-  };
+    return astObj;
+  }
 
   // trims spaces and ' " from a string
   // we get strings like "'test'" from the CSS definitions
@@ -72,7 +74,7 @@ class html2ntz {
       return str.replace(/^[\s'"]+|[\s'"]+$/g, "");
     }
     return str;
-  };
+  }
 
   // for each child we do a new node handling
   childerenHandler(element) {
@@ -81,23 +83,19 @@ class html2ntz {
       astArray.push(this.nodeHandler(element));
     });
     return astArray;
-  };
-
+  }
 
   generalTagHandler(element, style) {
     let parsed = {};
 
     Object.keys(style).map((objectKey, index) => {
-        if (objectKey.startsWith("-ntz-")) {
-          parsed[objectKey.substring(5)] = this.cssTrim(style[objectKey]);
-        }
+      if (objectKey.startsWith("-ntz-")) {
+        parsed[objectKey.substring(5)] = this.cssTrim(style[objectKey]);
+      }
     });
-
-    parsed.children = this.childerenHandler(element)
-
+    parsed.children = this.childerenHandler(element);
     return parsed;
   }
-
 
   parser(html) {
     // final ast
@@ -106,20 +104,15 @@ class html2ntz {
     // generate cheerio instance
     $ = cheerio.load(html);
 
-
     // what's the root object
-    // var root = $('body div.test')
     var root = $("body");
 
     var astArray = this.childerenHandler(root);
-
 
     // output as json
     var output = JSON.stringify(astArray, null, 4);
 
     fs.writeFileSync("./catalogue.json", output);
-
-    // console.log(output);
   }
 
   inlineCss(html) {
@@ -127,8 +120,7 @@ class html2ntz {
     var juiceOptions = {
       webResources: {
         relativeTo: path.dirname(__filename) + "/parserstyle"
-      },
-      inlinePseudoElements: true,
+      }
     };
 
     // inline style and run parser
@@ -137,6 +129,7 @@ class html2ntz {
         throw err;
       }
 
+      // delete space between tags
       var trimCssHTML = cssHTML.replace(/>\s+</g, "><");
 
       // save inlined file
@@ -152,12 +145,6 @@ class html2ntz {
   }
 }
 
-// export default html2ntz;
-
 var exports = (module.exports = {
   html2ntz
 });
-
-//
-//
-// run();

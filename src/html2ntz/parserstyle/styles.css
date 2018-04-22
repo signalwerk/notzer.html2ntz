@@ -1,0 +1,66 @@
+.root {
+  -ntz-type: "root";
+}
+
+p,
+h1, h2, h3, h4, h5, h6 {
+  -ntz-type: "paragraph";
+}
+
+p {
+  -ntz-type: "paragraph";
+  -ntz-class: "p";
+}
+h1 {
+  -ntz-type: "paragraph";
+  -ntz-node: "h1";
+  -ntz-class: "h1";
+}
+h2 {
+  -ntz-type: "paragraph";
+  -ntz-node: "h2";
+  -ntz-class: "h2";
+}
+h3 {
+  -ntz-type: "paragraph";
+  -ntz-node: "h3";
+  -ntz-class: "h3";
+}
+h4 {
+  -ntz-type: "paragraph";
+  -ntz-node: "h4";
+  -ntz-class: "h4";
+}
+h5 {
+  -ntz-type: "paragraph";
+  -ntz-node: "h5";
+  -ntz-class: "h5";
+}
+h6 {
+  -ntz-type: "paragraph";
+  -ntz-node: "h6";
+  -ntz-class: "h6";
+}
+
+table {
+  -ntz-type: "table";
+  -ntz-class: "Table Regular";
+}
+
+tr {
+  -ntz-type: "tr";
+  -ntz-class: "tr";
+}
+td {
+  -ntz-type: "td";
+  -ntz-class: "Cell Regular";
+  -ntz-width: 0;
+}
+th {
+  -ntz-type: "th";
+  -ntz-class: "Cell Header";
+  -ntz-width: 0;
+}
+span {
+  -ntz-type: "inline";
+}

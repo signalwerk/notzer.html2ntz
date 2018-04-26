@@ -1,6 +1,5 @@
 var cheerio = require("cheerio");
 var juice = require("juice");
-var fs = require("fs");
 var path = require("path");
 
 let $ = null;
@@ -16,7 +15,7 @@ class html2ntz {
     var nodeStyle = element.css();
 
     // the type generates defines the element handler
-    switch (this.cssTrim(nodeStyle["-ntz-type"])) {
+    switch (this.cssTrim(nodeStyle["-ntz-processor--type"])) {
       case "root":
         return this.generalTagHandler(element, nodeStyle);
         break;
@@ -24,6 +23,9 @@ class html2ntz {
         return this.generalTagHandler(element, nodeStyle);
         break;
       case "inline":
+        return this.generalTagHandler(element, nodeStyle);
+        break;
+      case "text":
         return this.generalTagHandler(element, nodeStyle);
         break;
       case "table":
@@ -55,8 +57,10 @@ class html2ntz {
         break;
       case 3: // 	TEXT_NODE -- The actual Text of Element or Attr.
         astObj = {
-          type: "text",
-          value: node.nodeValue
+          processor: {
+            type: "text",
+          },
+          value: node.nodeValue,
         };
         break;
       case 8: // 	COMMENT_NODE -- no handling for comments
@@ -88,9 +92,21 @@ class html2ntz {
   generalTagHandler(element, style) {
     let parsed = {};
 
+    // process
     Object.keys(style).map((objectKey, index) => {
       if (objectKey.startsWith("-ntz-")) {
-        parsed[objectKey.substring(5)] = this.cssTrim(style[objectKey]);
+
+        var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
+        if(match){
+
+          parsed[match[1]] = parsed[match[1]] || {};
+          parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
+
+        } else {
+          console.log('Wrong attribute: '+objectKey)
+        }
+
+
       }
     });
     parsed.children = this.childerenHandler(element);
@@ -110,12 +126,16 @@ class html2ntz {
     var astArray = this.childerenHandler(root);
 
     // output as json
-    var output = JSON.stringify(astArray, null, 4);
+    // console.log('astArray2', astArray);
 
-    fs.writeFileSync("./catalogue.json", output);
+    return astArray;
+
+    // var output = JSON.stringify(astArray, null, 4);
+
+    // fs.writeFileSync("./catalogue.json", output);
   }
 
-  inlineCss(html) {
+  inlineCss(html, cb) {
     // where to find the parser control file
     var juiceOptions = {
       webResources: {
@@ -124,7 +144,7 @@ class html2ntz {
     };
 
     // inline style and run parser
-    juice.juiceResources(html, juiceOptions, (err, cssHTML) => {
+    return juice.juiceResources(html, juiceOptions, (err, cssHTML) => {
       if (err) {
         throw err;
       }
@@ -133,15 +153,15 @@ class html2ntz {
       var trimCssHTML = cssHTML.replace(/>\s+</g, "><");
 
       // save inlined file
-      fs.writeFileSync("./catalogue_inline.html", trimCssHTML);
+      // fs.writeFileSync("./catalogue_inline.html", trimCssHTML);
 
-      this.parser(trimCssHTML);
+      cb(this.parser(trimCssHTML));
     });
   }
 
-  // generate the icsEvent
-  parse(html) {
-    this.inlineCss(html);
+  // generate the ast
+  parse(html, cb) {
+    return this.inlineCss(html, cb);
   }
 }
 

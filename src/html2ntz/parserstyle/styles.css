@@ -1,66 +1,381 @@
 .root {
-  -ntz-type: "root";
+  -ntz-processor--type: "root";
 }
 
 p,
 h1, h2, h3, h4, h5, h6 {
-  -ntz-type: "paragraph";
+  -ntz-processor--type: "paragraph";
+  /* -ntz-processor--content-after: "RETURN"; */
 }
 
 p {
-  -ntz-type: "paragraph";
-  -ntz-class: "p";
+  -ntz-processor--title: "p";
 }
 h1 {
-  -ntz-type: "paragraph";
-  -ntz-node: "h1";
-  -ntz-class: "h1";
+  -ntz-processor--node: "h1";
+  -ntz-processor--title: "h1";
 }
 h2 {
-  -ntz-type: "paragraph";
-  -ntz-node: "h2";
-  -ntz-class: "h2";
+  -ntz-processor--node: "h2";
+  -ntz-processor--title: "h2";
 }
 h3 {
-  -ntz-type: "paragraph";
-  -ntz-node: "h3";
-  -ntz-class: "h3";
+  -ntz-processor--node: "h3";
+  -ntz-processor--title: "h3";
 }
 h4 {
-  -ntz-type: "paragraph";
-  -ntz-node: "h4";
-  -ntz-class: "h4";
+  -ntz-processor--node: "h4";
+  -ntz-processor--title: "h4";
 }
 h5 {
-  -ntz-type: "paragraph";
-  -ntz-node: "h5";
-  -ntz-class: "h5";
+  -ntz-processor--node: "h5";
+  -ntz-processor--title: "h5";
 }
 h6 {
-  -ntz-type: "paragraph";
-  -ntz-node: "h6";
-  -ntz-class: "h6";
+  -ntz-processor--node: "h6";
+  -ntz-processor--title: "h6";
 }
 
 table {
-  -ntz-type: "table";
-  -ntz-class: "Table Regular";
+  -ntz-processor--type: "table";
+  -ntz-processor--title: "Table Regular";
 }
 
 tr {
-  -ntz-type: "tr";
-  -ntz-class: "tr";
+  -ntz-processor--type: "tr";
+  -ntz-processor--title: "tr";
 }
 td {
-  -ntz-type: "td";
-  -ntz-class: "Cell Regular";
-  -ntz-width: 0;
+  -ntz-processor--type: "td";
+  -ntz-processor--title: "Cell Regular";
+  -ntz-style--width: 0;
 }
 th {
-  -ntz-type: "th";
-  -ntz-class: "Cell Header";
-  -ntz-width: 0;
+  -ntz-processor--type: "th";
+  -ntz-processor--title: "Cell Header";
+  -ntz-style--width: 0;
 }
 span {
-  -ntz-type: "inline";
+  -ntz-processor--type: "inline";
+  -ntz-processor--title: "";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+span.rightindenttab {
+  -ntz-processor--type: "text";
+  -ntz-processor--content-after: "RIGHTINDENTTAB";
+}
+
+p.br,
+h1.br, h2.br, h3.br, h4.br, h5.br, h6.br {
+  -ntz-processor--content-after: "RETURN";
+}
+
+td.detail p,
+td.address p {
+  -ntz-processor--content-after: "RETURN";
+}
+
+td.detail p:last-child,
+td.address p:last-child {
+  -ntz-processor--content-after: "";
+}
+
+p.table {
+  -ntz-processor--title: "Table";
+}
+
+td, th {
+  -ntz-style--width: 46;
+}
+
+td.first, th.first {
+  -ntz-style--width: 40;
+}
+
+.address p {
+  -ntz-processor--title: "address";
+}
+.address p.bold {
+  -ntz-processor--title: "address bold";
+}
+
+table.inner {
+  -ntz-processor--title: "Table 2sp";
+}
+
+p.seminar {
+  -ntz-processor--title: "seminar";
+}
+p.space {
+  -ntz-processor--title: "spec space";
+}
+p.spec {
+  -ntz-processor--title: "spec";
+}
+
+td.header {
+  -ntz-processor--title: "Cell header";
+  -ntz-style--width: 86;
+}
+tr.address {
+    -ntz-style--min-height: 22.5;
+}
+
+td.detail {
+  -ntz-processor--title: "Cell detail";
+}
+td.address {
+  -ntz-processor--title: "Cell address";
+}
+span.bold {
+  -ntz-processor--type: "inline";
+  -ntz-processor--title: "bold";
+}
+
+span.stars {
+  -ntz-processor--type: "inline";
+  -ntz-processor--title: "stars";
+}
+span.superior {
+  -ntz-processor--type: "inline";
+  -ntz-processor--title: "superior";
+}
+
+
+table.canton {
+  -ntz-processor--title: "Table Kanton";
+}
+.canton tr {
+  -ntz-style--min-height: 52.9;
+}
+td.cantontitle {
+  -ntz-processor--title: "Cell Kanton";
+  -ntz-style--width: 86;
+}
+
+.canton h1 {
+  -ntz-processor--title: "Kanton h1";
+}
+.canton h1.nl {
+  -ntz-processor--content-after: "RETURN";
+}
+
+
+
+.canton__outer--AG td.cantontitle {
+  -ntz-processor--title: "Cell Kanton AG";
+}
+
+.canton__outer--AG  td.header {
+  -ntz-processor--title: "Cell header AG";
+}
+.canton__outer--AR td.cantontitle {
+  -ntz-processor--title: "Cell Kanton AR";
+}
+
+.canton__outer--AR  td.header {
+  -ntz-processor--title: "Cell header AR";
+}
+.canton__outer--AI td.cantontitle {
+  -ntz-processor--title: "Cell Kanton AI";
+}
+
+.canton__outer--AI  td.header {
+  -ntz-processor--title: "Cell header AI";
+}
+.canton__outer--BL td.cantontitle {
+  -ntz-processor--title: "Cell Kanton BL";
+}
+
+.canton__outer--BL  td.header {
+  -ntz-processor--title: "Cell header BL";
+}
+.canton__outer--BS td.cantontitle {
+  -ntz-processor--title: "Cell Kanton BS";
+}
+
+.canton__outer--BS  td.header {
+  -ntz-processor--title: "Cell header BS";
+}
+.canton__outer--BE td.cantontitle {
+  -ntz-processor--title: "Cell Kanton BE";
+}
+
+.canton__outer--BE  td.header {
+  -ntz-processor--title: "Cell header BE";
+}
+.canton__outer--FR td.cantontitle {
+  -ntz-processor--title: "Cell Kanton FR";
+}
+
+.canton__outer--FR  td.header {
+  -ntz-processor--title: "Cell header FR";
+}
+.canton__outer--GE td.cantontitle {
+  -ntz-processor--title: "Cell Kanton GE";
+}
+
+.canton__outer--GE  td.header {
+  -ntz-processor--title: "Cell header GE";
+}
+.canton__outer--GL td.cantontitle {
+  -ntz-processor--title: "Cell Kanton GL";
+}
+
+.canton__outer--GL  td.header {
+  -ntz-processor--title: "Cell header GL";
+}
+.canton__outer--GR td.cantontitle {
+  -ntz-processor--title: "Cell Kanton GR";
+}
+
+.canton__outer--GR  td.header {
+  -ntz-processor--title: "Cell header GR";
+}
+.canton__outer--JU td.cantontitle {
+  -ntz-processor--title: "Cell Kanton JU";
+}
+
+.canton__outer--JU  td.header {
+  -ntz-processor--title: "Cell header JU";
+}
+.canton__outer--LU td.cantontitle {
+  -ntz-processor--title: "Cell Kanton LU";
+}
+
+.canton__outer--LU  td.header {
+  -ntz-processor--title: "Cell header LU";
+}
+.canton__outer--NE td.cantontitle {
+  -ntz-processor--title: "Cell Kanton NE";
+}
+
+.canton__outer--NE  td.header {
+  -ntz-processor--title: "Cell header NE";
+}
+.canton__outer--NW td.cantontitle {
+  -ntz-processor--title: "Cell Kanton NW";
+}
+
+.canton__outer--NW  td.header {
+  -ntz-processor--title: "Cell header NW";
+}
+.canton__outer--OW td.cantontitle {
+  -ntz-processor--title: "Cell Kanton OW";
+}
+
+.canton__outer--OW  td.header {
+  -ntz-processor--title: "Cell header OW";
+}
+.canton__outer--SG td.cantontitle {
+  -ntz-processor--title: "Cell Kanton SG";
+}
+
+.canton__outer--SG  td.header {
+  -ntz-processor--title: "Cell header SG";
+}
+.canton__outer--SH td.cantontitle {
+  -ntz-processor--title: "Cell Kanton SH";
+}
+
+.canton__outer--SH  td.header {
+  -ntz-processor--title: "Cell header SH";
+}
+.canton__outer--SZ td.cantontitle {
+  -ntz-processor--title: "Cell Kanton SZ";
+}
+
+.canton__outer--SZ  td.header {
+  -ntz-processor--title: "Cell header SZ";
+}
+.canton__outer--SO td.cantontitle {
+  -ntz-processor--title: "Cell Kanton SO";
+}
+
+.canton__outer--SO  td.header {
+  -ntz-processor--title: "Cell header SO";
+}
+.canton__outer--TG td.cantontitle {
+  -ntz-processor--title: "Cell Kanton TG";
+}
+
+.canton__outer--TG  td.header {
+  -ntz-processor--title: "Cell header TG";
+}
+.canton__outer--TI td.cantontitle {
+  -ntz-processor--title: "Cell Kanton TI";
+}
+
+.canton__outer--TI  td.header {
+  -ntz-processor--title: "Cell header TI";
+}
+.canton__outer--UR td.cantontitle {
+  -ntz-processor--title: "Cell Kanton UR";
+}
+
+.canton__outer--UR  td.header {
+  -ntz-processor--title: "Cell header UR";
+}
+.canton__outer--VD td.cantontitle {
+  -ntz-processor--title: "Cell Kanton VD";
+}
+
+.canton__outer--VD  td.header {
+  -ntz-processor--title: "Cell header VD";
+}
+.canton__outer--VS td.cantontitle {
+  -ntz-processor--title: "Cell Kanton VS";
+}
+
+.canton__outer--VS  td.header {
+  -ntz-processor--title: "Cell header VS";
+}
+.canton__outer--ZG td.cantontitle {
+  -ntz-processor--title: "Cell Kanton ZG";
+}
+
+.canton__outer--ZG  td.header {
+  -ntz-processor--title: "Cell header ZG";
+}
+.canton__outer--ZH td.cantontitle {
+  -ntz-processor--title: "Cell Kanton ZH";
+}
+
+.canton__outer--ZH  td.header {
+  -ntz-processor--title: "Cell header ZH";
+}
+
+h1 span.header_span {
+  -ntz-processor--type: "inline";
+  -ntz-processor--title: "";
+}
+
+h1 span.header_span_11589,
+h1 span.header_span_10079 {
+  -ntz-processor--title: "TitleSmall";
 }

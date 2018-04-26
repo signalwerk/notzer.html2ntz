@@ -5,7 +5,7 @@
 p,
 h1, h2, h3, h4, h5, h6 {
   -ntz-processor--type: "paragraph";
-  /* -ntz-processor--content-after: "RETURN"; */
+  -ntz-processor--content-after: "RETURN";
 }
 
 p {
@@ -80,28 +80,17 @@ span {
 
 
 
-
-
-
-
+p.table {
+  -ntz-processor--content-after: "";
+}
 
 span.rightindenttab {
   -ntz-processor--type: "text";
   -ntz-processor--content-after: "RIGHTINDENTTAB";
 }
 
-p.br,
-h1.br, h2.br, h3.br, h4.br, h5.br, h6.br {
-  -ntz-processor--content-after: "RETURN";
-}
-
-td.detail p,
-td.address p {
-  -ntz-processor--content-after: "RETURN";
-}
-
-td.detail p:last-child,
-td.address p:last-child {
+td p:last-child,
+td h1:last-child {
   -ntz-processor--content-after: "";
 }
 
@@ -181,11 +170,6 @@ td.cantontitle {
 .canton h1 {
   -ntz-processor--title: "Kanton h1";
 }
-.canton h1.nl {
-  -ntz-processor--content-after: "RETURN";
-}
-
-
 
 .canton__outer--AG td.cantontitle {
   -ntz-processor--title: "Cell Kanton AG";

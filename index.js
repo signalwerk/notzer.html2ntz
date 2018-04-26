@@ -2,7 +2,7 @@ var fs = require("fs");
 const { html2ntz } = require("./src/html2ntz/");
 const { ntz2idtt } = require("./src/ntz2idtt/");
 
-var html = String(fs.readFileSync("./DATA/catalogue.html"));
+var html = String(fs.readFileSync("./DATA/_processed/catalogue.html"));
 
 // parse html to ntz
 let h2ntz = new html2ntz();

@@ -48,12 +48,12 @@ tr {
 td {
   -ntz-processor--type: "td";
   -ntz-processor--title: "Cell Regular";
-  -ntz-style--width: 0;
+  -ntz-style--width: auto;
 }
 th {
   -ntz-processor--type: "th";
   -ntz-processor--title: "Cell Header";
-  -ntz-style--width: 0;
+  -ntz-style--width: auto;
 }
 span {
   -ntz-processor--type: "inline";
@@ -170,6 +170,10 @@ td.cantontitle {
 .canton h1 {
   -ntz-processor--title: "Kanton h1";
 }
+
+
+
+
 
 .canton__outer--AG td.cantontitle {
   -ntz-processor--title: "Cell Kanton AG";

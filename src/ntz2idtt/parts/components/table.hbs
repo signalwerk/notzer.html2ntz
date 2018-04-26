@@ -1,25 +1,17 @@
 {{#TableStyle processor.title}}
   {{#Table processor.rowCount processor.columnCount}}
-
     {{#each processor.colWidth}}
       {{ColWidth this}}
     {{/each}}
-
     {{#each processor.rows}}
       {{#Row style.min-height}}
-    					{{#each children}}
-    								{{#CellStyle processor.title}}
-    									{{#Cell span}}
-
-    										{{> all children}}
-
-    									{{/Cell}}
-
-    								{{/CellStyle}}
-
-    					{{/each}}
-
-
+        {{#each children}}
+          {{#CellStyle processor.title}}
+            {{#Cell span}}
+              {{> all children}}
+            {{/Cell}}
+          {{/CellStyle}}
+        {{/each}}
       {{/Row}}
 		{{/each}}
   {{/Table}}

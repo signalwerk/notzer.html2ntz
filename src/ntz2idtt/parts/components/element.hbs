@@ -1,10 +1,10 @@
 {{#ifCond processor.type 'text'}}
-    {{#if value}}
-      {{text value}}
-    {{/if}}
-    {{#if processor.content-after}}
-      {{fixture processor.content-after}}
-    {{/if}}
+  {{#if value}}
+    {{text value}}
+  {{/if}}
+  {{#if processor.content-after}}
+    {{fixture processor.content-after}}
+  {{/if}}
 {{/ifCond}}
 
 {{#ifCond processor.type 'paragraph'}}
@@ -28,21 +28,21 @@
 {{/ifCond}}
 
 {{#ifCond processor.type 'table'}}
-    {{>table}}
+  {{>table}}
 {{/ifCond}}
 
 {{#ifCond processor.type 'tr'}}
-    {{> all children}}
+  {{> all children}}
 {{/ifCond}}
 
 {{#ifCond processor.type 'td'}}
-    {{> all children}}
+  {{> all children}}
 {{/ifCond}}
 
 {{#ifCond processor.type 'th'}}
-    {{> all children}}
+  {{> all children}}
 {{/ifCond}}
 
 {{#ifCond processor.type 'root'}}
-    {{> all children}}
+  {{> all children}}
 {{/ifCond}}

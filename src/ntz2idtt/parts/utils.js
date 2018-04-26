@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-var glob = require('glob');
-var path = require('path');
+var glob = require("glob");
+var path = require("path");
 
 /**
  * Load a set of files
@@ -19,4 +19,4 @@ exports.loadFiles = function(dir, pattern) {
   }
 
   return files;
-}
+};

@@ -58,9 +58,9 @@ class html2ntz {
       case 3: // 	TEXT_NODE -- The actual Text of Element or Attr.
         astObj = {
           processor: {
-            type: "text",
+            type: "text"
           },
-          value: node.nodeValue,
+          value: node.nodeValue
         };
         break;
       case 8: // 	COMMENT_NODE -- no handling for comments
@@ -95,18 +95,13 @@ class html2ntz {
     // process
     Object.keys(style).map((objectKey, index) => {
       if (objectKey.startsWith("-ntz-")) {
-
         var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
-        if(match){
-
+        if (match) {
           parsed[match[1]] = parsed[match[1]] || {};
           parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
-
         } else {
-          console.log('Wrong attribute: '+objectKey)
+          console.log("Wrong attribute: " + objectKey);
         }
-
-
       }
     });
     parsed.children = this.childerenHandler(element);
@@ -125,14 +120,7 @@ class html2ntz {
 
     var astArray = this.childerenHandler(root);
 
-    // output as json
-    // console.log('astArray2', astArray);
-
     return astArray;
-
-    // var output = JSON.stringify(astArray, null, 4);
-
-    // fs.writeFileSync("./catalogue.json", output);
   }
 
   inlineCss(html, cb) {
@@ -151,9 +139,6 @@ class html2ntz {
 
       // delete space between tags
       var trimCssHTML = cssHTML.replace(/>\s+</g, "><");
-
-      // save inlined file
-      // fs.writeFileSync("./catalogue_inline.html", trimCssHTML);
 
       cb(this.parser(trimCssHTML));
     });

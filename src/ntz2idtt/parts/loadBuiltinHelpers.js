@@ -1,17 +1,16 @@
-var utils = require('./utils');
-var Fixtures = require('./helpers/fixtures');
-var ParagraphStyle = require('./helpers/paragraphStyle');
-var IfObject = require('./helpers/ifObject');
-var IfCond = require('./helpers/ifCond');
-var txt = require('./helpers/text');
-var Cell = require('./helpers/cell');
-var CellStyle = require('./helpers/cellStyle');
-var CharStyle = require('./helpers/charStyle');
-var ColWidth = require('./helpers/colWidth');
-var Row = require('./helpers/row');
-var Table = require('./helpers/table');
-var TableStyle = require('./helpers/tableStyle');
-
+var utils = require("./utils");
+var Fixtures = require("./helpers/fixtures");
+var ParagraphStyle = require("./helpers/paragraphStyle");
+var IfObject = require("./helpers/ifObject");
+var IfCond = require("./helpers/ifCond");
+var txt = require("./helpers/text");
+var Cell = require("./helpers/cell");
+var CellStyle = require("./helpers/cellStyle");
+var CharStyle = require("./helpers/charStyle");
+var ColWidth = require("./helpers/colWidth");
+var Row = require("./helpers/row");
+var Table = require("./helpers/table");
+var TableStyle = require("./helpers/tableStyle");
 
 module.exports = function(Handlebars) {
   IfObject.register(Handlebars);
@@ -26,4 +25,4 @@ module.exports = function(Handlebars) {
   Row.register(Handlebars);
   Table.register(Handlebars);
   TableStyle.register(Handlebars);
-}
+};

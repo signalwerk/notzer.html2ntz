@@ -5,8 +5,6 @@ const { html2ntz } = require("../src/");
 var html = String(fs.readFileSync("./data/index.html"));
 var CSS = String(fs.readFileSync("./data/style.css"));
 
-
-
 // parse html to ntz
 let notzer = new html2ntz();
 

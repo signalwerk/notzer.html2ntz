@@ -11,6 +11,7 @@ let $ = null;
 class html2ntz {
   constructor(html) {
     this.html = html || "";
+    this.css = [];
   }
 
   // if the node is an element (p, h1, ...) we handle that
@@ -169,6 +170,9 @@ class html2ntz {
     // prepend default css
     var CSS = String(fs.readFileSync("../node_modules/notzer.css-ntz/src/index.css"));
     $('head').prepend('<style type="text/css">' + CSS + '</style>');
+
+    // add all the other css files
+    this.css.forEach(CSS => $('head').append('<style type="text/css">' + CSS + '</style>'))
 
     // remove whitespace
     this.whitespaceRemove($('body'));

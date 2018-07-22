@@ -1,6 +1,10 @@
 var cheerio = require("cheerio");
 var juice = require("juice");
 var path = require("path");
+var fs = require("fs");
+// var defaultCSS  = require("notzer.css-ntz");
+const TEXT_NODE = 3;
+const ELEMENT_NODE = 1;
 
 let $ = null;
 
@@ -52,10 +56,10 @@ class html2ntz {
     var astObj = {};
 
     switch (node.nodeType) {
-      case 1: // ELEMENT_NODE -- An Element node such as <p> or <div>.
+      case ELEMENT_NODE: // ELEMENT_NODE -- An Element node such as <p> or <div>.
         astObj = this.elementHandler($(node));
         break;
-      case 3: // 	TEXT_NODE -- The actual Text of Element or Attr.
+      case TEXT_NODE: // 	TEXT_NODE -- The actual Text of Element or Attr.
         astObj = {
           processor: {
             type: "text"
@@ -126,9 +130,12 @@ class html2ntz {
   inlineCss(html, cb) {
     // where to find the parser control file
     var juiceOptions = {
+
+      /*
       webResources: {
         relativeTo: path.dirname(__filename) + "/parserstyle"
       }
+      */
     };
 
     // inline style and run parser
@@ -136,17 +143,37 @@ class html2ntz {
       if (err) {
         throw err;
       }
-
-      // delete space between tags
-      var trimCssHTML = cssHTML.replace(/>\s+</g, "><");
-
-      cb(this.parser(trimCssHTML));
+      cb(this.parser(cssHTML));
     });
   }
 
+  // remove whitespace between tags
+  whitespaceRemove(element) {
+    $(element).contents().filter((index, item) => {
+
+      // recursion for
+      if (item.nodeType === ELEMENT_NODE) {
+        this.whitespaceRemove(item)
+      }
+      return item.nodeType === TEXT_NODE && item.nodeValue.trim() === "";
+    }).remove();
+  }
+
+
   // generate the ast
   parse(html, cb) {
-    return this.inlineCss(html, cb);
+
+    // generate cheerio instance
+    $ = cheerio.load(html);
+
+    // prepend default css
+    var CSS = String(fs.readFileSync("../node_modules/notzer.css-ntz/src/index.css"));
+    $('head').prepend('<style type="text/css">' + CSS + '</style>');
+
+    // remove whitespace
+    this.whitespaceRemove($('body'));
+
+    return this.inlineCss($.html(), cb);
   }
 }
 

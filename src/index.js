@@ -10,7 +10,7 @@ const ELEMENT_NODE = 1;
 
 let $ = null;
 
-class html2ntz {
+class Html2ntz {
   constructor(html) {
     this.html = html || "";
     this.css = [];
@@ -130,24 +130,9 @@ class html2ntz {
     return astArray;
   }
 
-  inlineCss(html, cb) {
-    // where to find the parser control file
-    var juiceOptions = {
-
-      /*
-      webResources: {
-        relativeTo: path.dirname(__filename) + "/parserstyle"
-      }
-      */
-    };
-
+  inlineCss(html) {
     // inline style and run parser
-    return juice.juiceResources(html, juiceOptions, (err, cssHTML) => {
-      if (err) {
-        throw err;
-      }
-      cb(this.parser(cssHTML));
-    });
+    return this.parser(juice(html));
   }
 
   // remove whitespace between tags
@@ -164,7 +149,7 @@ class html2ntz {
 
 
   // generate the ast
-  parse(html, cb) {
+  parse(html) {
 
     // generate cheerio instance
     $ = cheerio.load(html);
@@ -178,8 +163,8 @@ class html2ntz {
     // remove whitespace
     this.whitespaceRemove($('body'));
 
-    return this.inlineCss($.html(), cb);
+    return this.inlineCss($.html());
   }
 }
 
-exports.default = html2ntz;
+module.exports = Html2ntz;

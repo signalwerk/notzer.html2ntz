@@ -1,5 +1,5 @@
 var fs = require("fs");
-const { html2ntz } = require("../src/");
+const html2ntz = require("../src/");
 const path = require("path");
 
 const html = fs.readFileSync(path.resolve(__dirname, "./data/index.html"));

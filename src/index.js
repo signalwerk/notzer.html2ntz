@@ -182,6 +182,4 @@ class html2ntz {
   }
 }
 
-var exports = (module.exports = {
-  html2ntz
-});
+exports.default = html2ntz;

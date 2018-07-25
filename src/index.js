@@ -2,6 +2,8 @@ var cheerio = require("cheerio");
 var juice = require("juice");
 var path = require("path");
 var fs = require("fs");
+var CSS = require("notzer.css-ntz")
+
 // var defaultCSS  = require("notzer.css-ntz");
 const TEXT_NODE = 3;
 const ELEMENT_NODE = 1;
@@ -168,7 +170,6 @@ class html2ntz {
     $ = cheerio.load(html);
 
     // prepend default css
-    var CSS = String(fs.readFileSync("../node_modules/notzer.css-ntz/src/index.css"));
     $('head').prepend('<style type="text/css">' + CSS + '</style>');
 
     // add all the other css files

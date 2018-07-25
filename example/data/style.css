@@ -2,3 +2,7 @@
 h1 {
   -ntz-processor--title: "h1-test";
 }
+
+.stars {
+  -ntz-processor--title: "stars";
+}

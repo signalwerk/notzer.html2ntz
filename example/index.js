@@ -10,8 +10,6 @@ let notzer = new html2ntz();
 
 notzer.css.push(CSS);
 
-notzer.parse(html, AST => {
-  // write notzer file
-  let output = JSON.stringify(AST, null, 4);
-  fs.writeFileSync(path.resolve(__dirname, "./data/index.ntz.json"), output);
-});
+// write notzer file
+let output = JSON.stringify(notzer.parse(html), null, 4);
+fs.writeFileSync(path.resolve(__dirname, "./data/index.ntz.json"), output);

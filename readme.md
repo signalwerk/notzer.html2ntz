@@ -10,7 +10,7 @@ npm install notzer.html2ntz --save
 ## usage
 ```js
 var fs = require("fs");
-const { html2ntz } = require("../src/");
+const html2ntz = require("notzer.html2ntz");
 
 var html = String(fs.readFileSync("./index.html")); // the general HTML
 var CSS = String(fs.readFileSync("./style.css")); // additional CSS
@@ -20,9 +20,7 @@ let notzer = new html2ntz();
 
 notzer.css.push(CSS);
 
-notzer.parse(html, AST => {
-  // write notzer file
-  let output = JSON.stringify(AST, null, 4);
-  fs.writeFileSync("./test.ntz.json", output);
-});
+// write notzer file
+let output = JSON.stringify(notzer.parse(html), null, 4);
+fs.writeFileSync("./test.ntz.json", output);
 ```

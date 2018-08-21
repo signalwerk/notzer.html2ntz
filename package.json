@@ -1,6 +1,6 @@
 {
   "name": "notzer.html2ntz",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Convert HTML to Notzer",
   "main": "./src/index.js",
   "scripts": {

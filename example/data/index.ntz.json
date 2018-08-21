@@ -65,15 +65,16 @@
             "processor": {
                 "type": "img",
                 "title": "img",
-                "src": "test.gif",
+                "src": "./CropTrim.pdf",
                 "alt": "test"
             },
             "style": {
                 "width": "200",
                 "height": "100",
                 "background-position": "10 20",
-                "background-size": "300 100",
-                "background-clip": "29.5039 29.504 624.78 871.394"
+                "background-size": "150 auto",
+                "background-PDFCropBounds": "29.5039 29.504 624.78 871.394",
+                "background-PDFCropName": "CropTrim"
             },
             "children": []
         }

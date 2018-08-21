@@ -47,6 +47,12 @@ class Html2ntz {
       case "th":
         return this.generalTagHandler(element, nodeStyle);
         break;
+      case "img":
+        let obj = this.generalTagHandler(element, nodeStyle);
+        obj.processor.src = element[0].attribs.src || '';
+        obj.processor.alt = element[0].attribs.alt || '';
+        return obj;
+        break;
       default:
         // if we have no special handler we just parse the text
         return this.childerenHandler(element);

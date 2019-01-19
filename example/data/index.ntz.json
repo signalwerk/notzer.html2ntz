@@ -1,82 +1,91 @@
 [
-    [
-        {
-            "processor": {
-                "type": "paragraph",
-                "content-after": "RETURN",
-                "node": "h1",
-                "title": "h1-test"
-            },
-            "children": [
-                {
+    {
+        "type": "element",
+        "processor": {},
+        "children": [
+            {
+                "type": "element",
+                "processor": {
                     "processor": {
-                        "type": "text"
-                    },
-                    "value": "Heading 1"
-                }
-            ]
-        },
-        {
-            "processor": {
-                "type": "paragraph",
-                "content-after": "RETURN",
-                "node": "h2",
-                "title": "h2"
-            },
-            "children": [
-                {
-                    "processor": {
-                        "type": "text"
-                    },
-                    "value": "Heading 2"
-                }
-            ]
-        },
-        {
-            "processor": {
-                "type": "paragraph",
-                "content-after": "RETURN",
-                "title": "p"
-            },
-            "children": [
-                {
-                    "processor": {
-                        "type": "inline",
-                        "title": "stars"
-                    },
-                    "children": [
-                        {
-                            "processor": {
-                                "type": "text"
-                            },
-                            "value": " *** "
-                        }
-                    ]
+                        "type": "paragraph",
+                        "content-after": "RETURN",
+                        "node": "h1",
+                        "title": "h1-test"
+                    }
                 },
-                {
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "Heading 1"
+                    }
+                ]
+            },
+            {
+                "type": "element",
+                "processor": {
                     "processor": {
-                        "type": "text"
+                        "type": "paragraph",
+                        "content-after": "RETURN",
+                        "node": "h2",
+                        "title": "h2"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "Heading 2"
+                    }
+                ]
+            },
+            {
+                "type": "element",
+                "processor": {
+                    "processor": {
+                        "type": "paragraph",
+                        "content-after": "RETURN",
+                        "title": "p"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "element",
+                        "processor": {
+                            "processor": {
+                                "type": "inline",
+                                "title": "stars"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "text",
+                                "value": " *** "
+                            }
+                        ]
                     },
-                    "value": " This is a normal Paragraph."
-                }
-            ]
-        },
-        {
-            "processor": {
-                "type": "img",
-                "title": "img",
-                "src": "./CropTrim.pdf",
-                "alt": "test"
+                    {
+                        "type": "text",
+                        "value": " This is a normal Paragraph."
+                    }
+                ]
             },
-            "style": {
-                "width": "200",
-                "height": "100",
-                "background-position": "10 20",
-                "background-size": "150 auto",
-                "background-PDFCropBounds": "29.5039 29.504 624.78 871.394",
-                "background-PDFCropName": "CropTrim"
-            },
-            "children": []
-        }
-    ]
+            {
+                "type": "element",
+                "processor": {
+                    "processor": {
+                        "type": "img",
+                        "title": "img"
+                    },
+                    "style": {
+                        "width": "200",
+                        "height": "100",
+                        "background-position": "10 20",
+                        "background-size": "150 auto",
+                        "background-PDFCropBounds": "29.5039 29.504 624.78 871.394",
+                        "background-PDFCropName": "CropTrim"
+                    }
+                },
+                "children": []
+            }
+        ]
+    }
 ]

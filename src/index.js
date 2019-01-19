@@ -18,45 +18,59 @@ class Html2ntz {
 
   // if the node is an element (p, h1, ...) we handle that
   elementHandler(element) {
+
     // get the css to have the parser instructions
     var nodeStyle = element.css();
 
-    // the type generates defines the element handler
-    switch (this.cssTrim(nodeStyle["-ntz-processor--type"])) {
-      case "root":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "paragraph":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "inline":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "text":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "table":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "tr":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "td":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "th":
-        return this.generalTagHandler(element, nodeStyle);
-        break;
-      case "img":
-        let obj = this.generalTagHandler(element, nodeStyle);
-        obj.processor.src = element[0].attribs.src || '';
-        obj.processor.alt = element[0].attribs.alt || '';
-        return obj;
-        break;
-      default:
-        // if we have no special handler we just parse the text
-        return this.childerenHandler(element);
-    }
+    return {
+      type: "element",
+      processor: this.getProcessorInstrucitions(nodeStyle),
+      // processor: {
+      //   type: "text"
+      // },
+      children: this.childerenHandler(element)
+    };
+
+
+
+    //
+    //
+    // // the type generates defines the element handler
+    // switch (this.cssTrim(nodeStyle["-ntz-processor--type"])) {
+    //   case "root":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "paragraph":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "inline":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "text":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "table":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "tr":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "td":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "th":
+    //     return this.generalTagHandler(element, nodeStyle);
+    //     break;
+    //   case "img":
+    //     let obj = this.generalTagHandler(element, nodeStyle);
+    //     obj.processor.src = element[0].attribs.src || '';
+    //     obj.processor.alt = element[0].attribs.alt || '';
+    //     return obj;
+    //     break;
+    //   default:
+    //     // if we have no special handler we just parse the text
+    //     return this.childerenHandler(element);
+    // }
   }
 
   // each node needs to be handled by it's type
@@ -70,9 +84,10 @@ class Html2ntz {
         break;
       case TEXT_NODE: // 	TEXT_NODE -- The actual Text of Element or Attr.
         astObj = {
-          processor: {
-            type: "text"
-          },
+          type: "text",
+          // processor: {
+          //   type: "text"
+          // },
           value: node.nodeValue
         };
         break;
@@ -100,6 +115,24 @@ class Html2ntz {
       astArray.push(this.nodeHandler(element));
     });
     return astArray;
+  }
+
+  getProcessorInstrucitions(style) {
+    let parsed = {};
+
+    // process
+    Object.keys(style).map((objectKey, index) => {
+      if (objectKey.startsWith("-ntz-")) {
+        var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
+        if (match) {
+          parsed[match[1]] = parsed[match[1]] || {};
+          parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
+        } else {
+          console.log("Wrong attribute: " + objectKey);
+        }
+      }
+    });
+    return parsed;
   }
 
   generalTagHandler(element, style) {

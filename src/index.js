@@ -14,6 +14,7 @@ let $ = null;
 class Html2ntz {
   constructor(html) {
     this.html = html || "";
+    this.defaultCSS = true;
     this.css = [];
   }
 
@@ -127,13 +128,11 @@ class Html2ntz {
     // what's the root object
     var root = $("body");
 
+    // handle root
     var astArray = this.childerenHandler(root);
 
-    let astObj = new Notzer();
-
-    astObj.type("root").children(astArray);
-
-    return astObj;
+    // return root notzer
+    return new Notzer().type("root").children(astArray);
   }
 
   // remove whitespace between tags
@@ -156,10 +155,14 @@ class Html2ntz {
     $ = cheerio.load(html);
 
     // prepend default css
-    // $("head").prepend('<style type="text/css">' + CSS + "</style>");
+    if (this.defaultCSS) {
+      $("head").prepend('<style type="text/css">' + CSS + "</style>");
+    }
 
     // add all the other css files
-    // this.css.forEach(CSS => $('head').append('<style type="text/css">' + CSS + '</style>'))
+    this.css.forEach(CSS =>
+      $("head").append('<style type="text/css">' + CSS + "</style>")
+    );
 
     // remove whitespace
     this.whitespaceRemove($("body"));

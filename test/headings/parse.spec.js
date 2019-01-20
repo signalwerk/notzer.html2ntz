@@ -7,6 +7,7 @@ const html = fs.readFileSync(path.resolve(__dirname, "./h1.html"));
 
 // parse html to ntz
 let notzer = new Html2ntz();
+notzer.defaultCSS = false;
 
 let output = JSON.stringify(notzer.parse(html).data(), null, 4);
 fs.writeFileSync(path.resolve(__dirname, "./h1.ntz.json"), output);
@@ -15,7 +16,7 @@ var assert = require("assert");
 
 var assert = require("assert");
 describe("Tag", function() {
-  describe("parse", function() {
+  describe("parse without default CSS", function() {
     it("empty tag should only return type and name", function() {
       assert.deepEqual(notzer.parse("<h1/>").data(), [
         { type: "element", name: "h1" }

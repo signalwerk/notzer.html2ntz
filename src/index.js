@@ -2,7 +2,7 @@ var cheerio = require("cheerio");
 var juice = require("juice");
 var path = require("path");
 var fs = require("fs");
-var CSS = require("notzer.css-ntz")
+var CSS = require("notzer.css-ntz");
 
 // var defaultCSS  = require("notzer.css-ntz");
 const TEXT_NODE = 3;
@@ -16,61 +16,43 @@ class Html2ntz {
     this.css = [];
   }
 
+  getAttributes(node) {
+    var attrs = {};
+
+    Object.keys(node[0].attribs).map(key => {
+      if (String.prototype.toLowerCase.apply(key) !== "style") {
+        attrs[key] = node[0].attribs[key];
+      }
+    });
+
+    return attrs;
+  }
+
   // if the node is an element (p, h1, ...) we handle that
-  elementHandler(element) {
+  elementHandler(node) {
 
-    // get the css to have the parser instructions
-    var nodeStyle = element.css();
-
-    return {
+    let element = {
       type: "element",
-      processor: this.getProcessorInstrucitions(nodeStyle),
-      // processor: {
-      //   type: "text"
-      // },
-      children: this.childerenHandler(element)
+      name: node[0].name
     };
 
+    let attributes = this.getAttributes(node);
+    if (Object.keys(attributes).length) {
+      element.attributes = attributes;
+    }
 
+    let css = node.css();
+    if (Object.keys(css).length) {
+      element.css = css;
+    }
 
-    //
-    //
-    // // the type generates defines the element handler
-    // switch (this.cssTrim(nodeStyle["-ntz-processor--type"])) {
-    //   case "root":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "paragraph":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "inline":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "text":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "table":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "tr":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "td":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "th":
-    //     return this.generalTagHandler(element, nodeStyle);
-    //     break;
-    //   case "img":
-    //     let obj = this.generalTagHandler(element, nodeStyle);
-    //     obj.processor.src = element[0].attribs.src || '';
-    //     obj.processor.alt = element[0].attribs.alt || '';
-    //     return obj;
-    //     break;
-    //   default:
-    //     // if we have no special handler we just parse the text
-    //     return this.childerenHandler(element);
-    // }
+    let children = this.childerenHandler(node);
+    if (children.length) {
+      element.children = children;
+    }
+
+    return element;
+
   }
 
   // each node needs to be handled by it's type
@@ -121,17 +103,18 @@ class Html2ntz {
     let parsed = {};
 
     // process
-    Object.keys(style).map((objectKey, index) => {
-      if (objectKey.startsWith("-ntz-")) {
-        var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
-        if (match) {
-          parsed[match[1]] = parsed[match[1]] || {};
-          parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
-        } else {
-          console.log("Wrong attribute: " + objectKey);
-        }
-      }
-    });
+    // Object.keys(style).map((objectKey, index) => {
+    //   if (objectKey.startsWith("-ntz-")) {
+    //     var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
+    //     if (match) {
+    //       parsed[match[1]] = parsed[match[1]] || {};
+    //       parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
+    //     } else {
+    //       console.log("Wrong attribute: " + objectKey);
+    //     }
+    //   }
+    // });
+
     return parsed;
   }
 
@@ -176,31 +159,31 @@ class Html2ntz {
 
   // remove whitespace between tags
   whitespaceRemove(element) {
-    $(element).contents().filter((index, item) => {
-
-      // recursion for
-      if (item.nodeType === ELEMENT_NODE) {
-        this.whitespaceRemove(item)
-      }
-      return item.nodeType === TEXT_NODE && item.nodeValue.trim() === "";
-    }).remove();
+    $(element)
+      .contents()
+      .filter((index, item) => {
+        // recursion for
+        if (item.nodeType === ELEMENT_NODE) {
+          this.whitespaceRemove(item);
+        }
+        return item.nodeType === TEXT_NODE && item.nodeValue.trim() === "";
+      })
+      .remove();
   }
-
 
   // generate the ast
   parse(html) {
-
     // generate cheerio instance
     $ = cheerio.load(html);
 
     // prepend default css
-    $('head').prepend('<style type="text/css">' + CSS + '</style>');
+    // $("head").prepend('<style type="text/css">' + CSS + "</style>");
 
     // add all the other css files
-    this.css.forEach(CSS => $('head').append('<style type="text/css">' + CSS + '</style>'))
+    // this.css.forEach(CSS => $('head').append('<style type="text/css">' + CSS + '</style>'))
 
     // remove whitespace
-    this.whitespaceRemove($('body'));
+    this.whitespaceRemove($("body"));
 
     return this.inlineCss($.html());
   }

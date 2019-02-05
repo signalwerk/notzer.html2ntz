@@ -1,20 +1,13 @@
+// parse html to ntz
 const fs = require("fs");
 const path = require("path");
+const assert = require("assert");
 
-const Html2ntz = require("../../src/");
+const Html2ntz = require("../src/");
 
-const html = fs.readFileSync(path.resolve(__dirname, "./h1.html"));
-
-// parse html to ntz
 let notzer = new Html2ntz();
 notzer.defaultCSS = false;
 
-let output = JSON.stringify(notzer.parse(html).data(), null, 4);
-fs.writeFileSync(path.resolve(__dirname, "./h1.ntz.json"), output);
-
-var assert = require("assert");
-
-var assert = require("assert");
 describe("Tag", function() {
   describe("parse without default CSS", function() {
     it("empty tag should only return type and name", function() {

@@ -1,3 +1,5 @@
+// var EventEmitter = require('events')
+
 class Notzer {
   constructor(name) {
     this._name = name;
@@ -31,59 +33,66 @@ class Notzer {
     if (this._type === "root") {
       return node.children;
     }
+
+    if (this._events) {
+      this._events.emit("data:end", this, node, newData => (node = newData));
+    }
+
     return node;
   }
 
-  get value() {
-    return this._value;
+  events(value) {
+    if (arguments.length === 0) {
+      return this._events;
+    }
+    this._events = value;
+    return this;
   }
 
   value(value) {
+    if (arguments.length === 0) {
+      return this._value;
+    }
     this._value = value;
     return this;
   }
 
-  get name() {
-    return this._name;
-  }
-
   name(value) {
+    if (arguments.length === 0) {
+      return this._name;
+    }
     this._name = value;
     return this;
   }
 
-  get type() {
-    return this._type;
-  }
-
   type(value) {
+    if (arguments.length === 0) {
+      return this._type;
+    }
     this._type = value;
     return this;
   }
 
-  get attributes() {
-    return this._attributes;
-  }
-
   attributes(value) {
+    if (arguments.length === 0) {
+      return this._attributes;
+    }
     this._attributes = value;
     return this;
   }
 
-  get css() {
-    return this._css;
-  }
-
   css(value) {
+    if (arguments.length === 0) {
+      return this._css;
+    }
     this._css = value;
     return this;
   }
 
-  get children() {
-    return this._children;
-  }
-
   children(value) {
+    if (arguments.length === 0) {
+      return this._children;
+    }
     this._children = value;
     return this;
   }

@@ -4,6 +4,7 @@ var path = require("path");
 var fs = require("fs");
 var CSS = require("notzer.css-ntz");
 var Notzer = require("./notzer");
+var EventEmitter = require("events");
 
 // var defaultCSS  = require("notzer.css-ntz");
 const TEXT_NODE = 3;
@@ -12,10 +13,27 @@ const ELEMENT_NODE = 1;
 let $ = null;
 
 class Html2ntz {
-  constructor(html) {
-    this.html = html || "";
+  constructor() {
     this.defaultCSS = true;
     this.css = [];
+    this.events = new EventEmitter();
+
+    this. setupNotzer();
+  }
+
+  setupNotzer() {
+    this.events.on("elementHandler:end", (element, cb) => {
+      let ntz = this.parseNotzerInstructions(element);
+      cb("ntz", ntz);
+    });
+
+    this.events.on("data:end", (element, _data, cb) => {
+      let data = Object.assign({}, _data);
+      if (element.ntz && Object.keys(element.ntz).length) {
+        data.ntz = element.ntz;
+      }
+      cb(data);
+    });
   }
 
   getAttributes(node) {
@@ -37,10 +55,16 @@ class Html2ntz {
     element
       .name(node[0].name)
       .type("element")
+      .events(this.events)
       .attributes(this.getAttributes(node))
       .css(node.css())
       .children(this.childerenHandler(node));
 
+    this.events.emit(
+      "elementHandler:end",
+      element,
+      (key, newElement) => (element[key] = newElement)
+    );
     return element;
   }
 
@@ -55,7 +79,10 @@ class Html2ntz {
         break;
       case TEXT_NODE: // 	TEXT_NODE -- The actual Text of Element or Attr.
         astObj = new Notzer();
-        astObj.type("text").value(node.nodeValue);
+        astObj
+          .type("text")
+          .events(this.events)
+          .value(node.nodeValue);
         break;
       case 8: // 	COMMENT_NODE -- no handling for comments
         break;
@@ -83,58 +110,6 @@ class Html2ntz {
     return astArray;
   }
 
-  getProcessorInstrucitions(style) {
-    let parsed = {};
-
-    // process
-    // Object.keys(style).map((objectKey, index) => {
-    //   if (objectKey.startsWith("-ntz-")) {
-    //     var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
-    //     if (match) {
-    //       parsed[match[1]] = parsed[match[1]] || {};
-    //       parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
-    //     } else {
-    //       console.log("Wrong attribute: " + objectKey);
-    //     }
-    //   }
-    // });
-
-    return parsed;
-  }
-
-  generalTagHandler(element, style) {
-    let parsed = {};
-
-    // process
-    Object.keys(style).map((objectKey, index) => {
-      if (objectKey.startsWith("-ntz-")) {
-        var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
-        if (match) {
-          parsed[match[1]] = parsed[match[1]] || {};
-          parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
-        } else {
-          console.log("Wrong attribute: " + objectKey);
-        }
-      }
-    });
-    parsed.children = this.childerenHandler(element);
-    return parsed;
-  }
-
-  parser(html) {
-    // generate cheerio instance
-    $ = cheerio.load(html);
-
-    // what's the root object
-    var root = $("body");
-
-    // handle root
-    var astArray = this.childerenHandler(root);
-
-    // return root notzer
-    return new Notzer().type("root").children(astArray);
-  }
-
   // remove whitespace between tags
   whitespaceRemove(element) {
     $(element)
@@ -149,6 +124,32 @@ class Html2ntz {
       .remove();
   }
 
+  parseNotzerInstructions(element) {
+    let style = element.css();
+
+    let parsed = {};
+    let css = {};
+
+    // process
+    Object.keys(style).map((objectKey, index) => {
+      if (objectKey.startsWith("-ntz-")) {
+        var match = /^-ntz-([a-zA-Z0-9-]+)--([a-zA-Z0-9-]+)/.exec(objectKey);
+        if (match) {
+          parsed[match[1]] = parsed[match[1]] || {};
+          parsed[match[1]][match[2]] = this.cssTrim(style[objectKey]);
+        } else {
+          console.log("Wrong attribute: " + objectKey);
+        }
+      } else {
+        css[objectKey] = style[objectKey];
+      }
+    });
+
+    element.css(css);
+
+    return parsed;
+  }
+
   // generate the ast
   parse(html) {
     // generate cheerio instance
@@ -160,14 +161,27 @@ class Html2ntz {
     }
 
     // add all the other css files
-    this.css.forEach(CSS =>
-      $("head").append('<style type="text/css">' + CSS + "</style>")
-    );
+    this.css.forEach(CSS => {
+      $("head").append('<style type="text/css">' + CSS + "</style>");
+    });
 
     // remove whitespace
     this.whitespaceRemove($("body"));
 
-    return this.parser(juice($.html()));
+    // inline styles
+    $ = cheerio.load(juice($.html()));
+
+    // what's the root object
+    var root = $("body");
+
+    // handle root
+    var astArray = this.childerenHandler(root);
+
+    // return root notzer
+    return new Notzer()
+      .type("root")
+      .events(this.events)
+      .children(astArray);
   }
 }
 

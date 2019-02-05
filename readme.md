@@ -21,12 +21,25 @@ let notzer = new html2ntz();
 notzer.css.push(CSS);
 
 // write notzer file
-let output = JSON.stringify(notzer.parse(html), null, 4);
+let output = JSON.stringify(notzer.parse(html).data(), null, 4);
 fs.writeFileSync("./test.ntz.json", output);
 ```
 
+## Online-Test
+https://runkit.com/
 
 ## ToDo
 * Build Library with [rollup](https://github.com/rollup/rollup-starter-lib/tree/babel).
 
-https://runkit.com/
+
+## Commands
+
+### Run all tests
+```sh
+npm test
+```
+
+### Run a specific tests
+```sh
+npx mocha ./test/parse.css.spec.js
+```

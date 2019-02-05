@@ -1,44 +1,44 @@
-// var EventEmitter = require('events')
+// Simple Node implementation of Nodes
 
-class Notzer {
+class Node {
   constructor(name) {
     this._name = name;
   }
 
   data() {
-    let node = {
+    let data = {
       type: this._type
     };
 
     if (this._value) {
-      node.value = this._value;
+      data.value = this._value;
     }
 
     if (this._name) {
-      node.name = this._name;
+      data.name = this._name;
     }
 
     if (this._attributes && Object.keys(this._attributes).length) {
-      node.attributes = this._attributes;
+      data.attributes = this._attributes;
     }
 
     if (this._css && Object.keys(this._css).length) {
-      node.css = this._css;
+      data.css = this._css;
     }
 
     if (this._children && this._children.length) {
-      node.children = this._children.map(item => item.data());
+      data.children = this._children.map(item => item.data());
     }
 
     if (this._type === "root") {
-      return node.children;
+      return data.children;
     }
 
-    if (this._events) {
-      this._events.emit("data:end", this, node, newData => (node = newData));
+    if (this._events && this._events.emit) {
+      this._events.emit("data:end", this, data, newData => (data = newData));
     }
 
-    return node;
+    return data;
   }
 
   events(value) {
@@ -98,4 +98,4 @@ class Notzer {
   }
 }
 
-module.exports = Notzer;
+module.exports = Node;

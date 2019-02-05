@@ -3,7 +3,7 @@ var juice = require("juice");
 var path = require("path");
 var fs = require("fs");
 var CSS = require("notzer.css-ntz");
-var Notzer = require("./notzer");
+var Node = require("./node/node");
 var EventEmitter = require("events");
 
 // var defaultCSS  = require("notzer.css-ntz");
@@ -27,12 +27,12 @@ class Html2ntz {
       cb("ntz", ntz);
     });
 
-    this.events.on("data:end", (element, _data, cb) => {
+    this.events.on("data:end", (node, _data, setData) => {
       let data = Object.assign({}, _data);
-      if (element.ntz && Object.keys(element.ntz).length) {
-        data.ntz = element.ntz;
+      if (node.ntz && Object.keys(node.ntz).length) {
+        data.ntz = node.ntz;
       }
-      cb(data);
+      setData(data);
     });
   }
 
@@ -50,7 +50,7 @@ class Html2ntz {
 
   // if the node is an element (p, h1, ...) we handle that
   elementHandler(node) {
-    let element = new Notzer();
+    let element = new Node();
 
     element
       .name(node[0].name)
@@ -78,7 +78,7 @@ class Html2ntz {
         astObj = this.elementHandler($(node));
         break;
       case TEXT_NODE: // 	TEXT_NODE -- The actual Text of Element or Attr.
-        astObj = new Notzer();
+        astObj = new Node();
         astObj
           .type("text")
           .events(this.events)
@@ -178,7 +178,7 @@ class Html2ntz {
     var astArray = this.childerenHandler(root);
 
     // return root notzer
-    return new Notzer()
+    return new Node()
       .type("root")
       .events(this.events)
       .children(astArray);

@@ -1,0 +1,12 @@
+[
+    {
+        "type": "element",
+        "name": "span",
+        "ntz": {
+            "processor": {
+                "type": "inline",
+                "title": ""
+            }
+        }
+    }
+]
